@@ -1,46 +1,48 @@
-import "./Services.css";
+import {
+  Section,
+  Container,
+  Heading,
+  ATag,
+  List,
+  ListItem,
+  Img,
+  Box,
+} from "./Services.styled";
 import iconCart from "../assets/icon-cart.png";
 import iconHand from "../assets/icon-hand.png";
 import iconWorld from "../assets/icon-world.png";
 import iconCarrot from "../assets/icon-carrot.png";
 
 export const Services = () => (
-  <section className="services">
-    <div className="container">
-      <h1 className="heading">Our Services</h1>
-      <div className="box">
-        <ul className="list">
-          <li className="list-item">
-            <a className="a-tag" href="#" target="_self">
-              Online Shopping{" "}
-              <img className="img" src={iconCart} alt="icon-cart" />
-            </a>
-          </li>
-          <li className="list-item">
-            <a className="a-tag" href="#" target="_self">
-              Quality Product{" "}
-              <img className="img" src={iconHand} alt="icon-hand" />
-            </a>
-          </li>
-          <li className="list-item">
-            <a className="a-tag" href="#" target="_self">
+  <Section>
+    <Container>
+      <Heading>Our Services</Heading>
+      <Box>
+        <List>
+          <ListItem>
+            <ATag href="#" target="_self">
+              OnListItemne Shopping <Img src={iconCart} alt="icon-cart" />
+            </ATag>
+          </ListItem>
+          <ListItem>
+            <ATag href="#" target="_self">
+              QuaListItemty Product <Img src={iconHand} alt="icon-hand" />
+            </ATag>
+          </ListItem>
+          <ListItem>
+            <ATag href="#" target="_self">
               Domestic & International
-              <br /> Delivery{" "}
-              <img
-                className="img icon-world"
-                src={iconWorld}
-                alt="icon-world"
-              />
-            </a>
-          </li>
-          <li className="list-item">
-            <a className="a-tag" href="#" target="_self">
-              Well Organized{" "}
-              <img className="img" src={iconCarrot} alt="icon-carrot" />
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </section>
+              <br /> DeListItemvery{" "}
+              <Img isWorld src={iconWorld} alt="icon-world" />
+            </ATag>
+          </ListItem>
+          <ListItem>
+            <ATag href="#" target="_self">
+              Well Organized <Img src={iconCarrot} alt="icon-carrot" />
+            </ATag>
+          </ListItem>
+        </List>
+      </Box>
+    </Container>
+  </Section>
 );

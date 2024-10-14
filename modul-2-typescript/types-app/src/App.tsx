@@ -1,19 +1,32 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { Input } from "./Input";
 
-function App() {
-  const [formData, setFormData] = useState(null);
+type State = {
+  email: string;
+  password: string;
+};
 
-  const handleSubmit = (event) => {
+function App() {
+  const [formData, setFormData] = useState<State | null>(null);
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log();
   };
 
-  const setData = (data) => {
-    setFormData({
-      ...formData,
-      ...data,
-    });
+  const setData = (data: { [key: string]: string }) => {
+    if (!formData) {
+      setFormData({
+        email: "",
+        password: "",
+        ...data,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        ...data,
+      });
+    }
   };
 
   return (

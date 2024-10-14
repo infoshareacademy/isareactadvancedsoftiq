@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 const formStyles = {
   display: "flex",
@@ -23,7 +23,7 @@ function App() {
     reset,
   } = useForm<FormState>();
 
-  const onSubmit = (data: FormState) => {
+  const onSubmit: SubmitHandler<FormState> = (data) => {
     alert(JSON.stringify(data, null, 2));
   };
 
@@ -68,8 +68,14 @@ function App() {
           id="age"
           {...register("age", {
             valueAsNumber: true,
+            validate: {
+              old: (v) => Number(v) < 100,
+            },
           })}
         />
+        {errors.age && errors.age.type === "old" && (
+          <span style={{ color: "red" }}>You are probably dead.</span>
+        )}
         <label htmlFor="gender">Gender</label>
         <select id="gender" {...register("gender")}>
           <option>male</option>

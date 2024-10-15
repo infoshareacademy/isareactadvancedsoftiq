@@ -1,4 +1,3 @@
-import { useQuery } from "react-query";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,15 +8,12 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import CircularProgress from "@mui/material/CircularProgress";
 import { PageWrapper } from "../../common/page-wrapper";
-import { Burger } from "../../common/types";
-import { getBurgers } from "../../services/burgers";
 import { AddModalButton } from "./add-modal-button";
 import { Row } from "./row";
+import { useQueryBurger } from "../../controllers/burgers";
 
 export const Admin = () => {
-  const burgers = [];
-  const error = Error("brak implementacji");
-  const isLoading = false;
+  const { isLoading, error, data: burgers } = useQueryBurger();
 
   if (error) {
     return <PageWrapper title="An error occurred">{error.message}</PageWrapper>;

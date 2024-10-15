@@ -3,11 +3,15 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import { PageWrapper } from "../../../common/page-wrapper";
+import { useQuery } from "@tanstack/react-query";
+import { getBurger } from "../../../services/burgers";
+import { BurgerData } from "../../../common/types";
 
 const DetailsView = ({ id }: { id: string }) => {
-  const data = null;
-  const isLoading = false;
-  const error = Error("brak implementacji");
+  const { data, isLoading, error } = useQuery<BurgerData, Error>({
+    queryKey: ["burger", id],
+    queryFn: () => getBurger(id),
+  });
 
   if (error) {
     return <PageWrapper title="An error occurred">{error.message}</PageWrapper>;

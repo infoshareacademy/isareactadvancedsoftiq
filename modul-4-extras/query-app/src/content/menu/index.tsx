@@ -8,11 +8,10 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import CircularProgress from "@mui/material/CircularProgress";
 import { PageWrapper } from "../../common/page-wrapper";
+import { useQueryBurger } from "../../controllers/burgers";
 
 export const Menu = () => {
-  const burgers = [];
-  const error = Error("brak implementacji");
-  const isLoading = false;
+  const { isLoading, error, data: burgers } = useQueryBurger();
 
   if (error) {
     return <PageWrapper title="An error occurred">{error.message}</PageWrapper>;

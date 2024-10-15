@@ -13,7 +13,11 @@ type Props = {
   cancelEditMode: () => void;
 };
 
-const cellFields = ["name", "ingredients", "price"];
+const cellFields: ("name" | "ingredients" | "price")[] = [
+  "name",
+  "ingredients",
+  "price",
+];
 
 export const EditRow = ({ burger, cancelEditMode }: Props) => {
   const { register, getValues } = useForm({

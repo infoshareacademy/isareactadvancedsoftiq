@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addBurger } from "../../../services/burgers";
+import { Burger } from "../../../common/types";
 
 type Props = {
   handleClose: () => void;
@@ -22,6 +23,20 @@ export const AddModal = ({ handleClose, isOpen }: Props) => {
     onSuccess: () => {
       handleClose();
       queryClient.invalidateQueries({ queryKey: ["burgers"] });
+    },
+    onMutate: async (newBurger) => {
+      await queryClient.cancelQueries({ queryKey: ["burgers"] });
+      const previousTodos = queryClient.getQueryData(["burgers"]);
+      queryClient.setQueryData(["burgers"], (old: Burger[]) => [
+        ...old,
+        newBurger,
+      ]);
+      return { previousTodos };
+    },
+    onError: (_, __, context) => {
+      if (context?.previousTodos) {
+        queryClient.setQueryData(["burgers"], context.previousTodos);
+      }
     },
   });
 

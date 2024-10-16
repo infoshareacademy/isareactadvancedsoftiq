@@ -9,7 +9,7 @@ function App() {
       <TaskManager />
       <ShoppingCart />
       <UserDataManager />
-        <NameInput
+      <NameInput />
     </>
   );
 }

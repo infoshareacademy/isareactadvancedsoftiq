@@ -64,7 +64,7 @@ const TaskManager = () => {
     );
   };
 
-  const filteredTasks = () => {
+  const getFilteredTasks = () => {
     if (filter === "completed") {
       return tasks.filter((task) => task.completed);
     } else if (filter === "active") {
@@ -82,7 +82,7 @@ const TaskManager = () => {
         <button onClick={() => setFilter("active")}>Aktywne</button>
       </div>
       <TasksList
-        tasks={filteredTasks}
+        tasks={getFilteredTasks()}
         handleDeleteTask={handleDeleteTask}
         toggleTaskCompletion={toggleTaskCompletion}
       />

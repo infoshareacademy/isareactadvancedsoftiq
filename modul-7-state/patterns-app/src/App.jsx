@@ -1,6 +1,6 @@
 import { FetchData } from "./FetchData";
 import { FetchDataChildren } from "./FetchDataChildren";
-import { Posts } from "./Posts";
+import Posts from "./Posts";
 
 const url = "https://jsonplaceholder.typicode.com/posts";
 function App() {

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect, useMemo, memo } from "react";
 
-const AddTaskForm = ({ handleAddTask }) => {
+const AddTaskForm = memo(({ handleAddTask }) => {
   const [taskName, setTaskName] = useState("");
   const onClick = () => {
     handleAddTask(taskName);
@@ -17,9 +17,9 @@ const AddTaskForm = ({ handleAddTask }) => {
       <button onClick={onClick}>Dodaj zadanie</button>
     </>
   );
-};
+});
 
-const TasksList = ({ tasks, toggleTaskCompletion, handleDeleteTask }) => {
+const TasksList = memo(({ tasks, toggleTaskCompletion, handleDeleteTask }) => {
   return (
     <>
       <ul>
@@ -40,38 +40,48 @@ const TasksList = ({ tasks, toggleTaskCompletion, handleDeleteTask }) => {
       </ul>
     </>
   );
+});
+
+const Comp = () => {
+  const [val, setVal] = useState("");
+  return (
+    <h1>
+      Comp<button onClick={() => setVal(val + 1)}>{val}</button>
+    </h1>
+  );
 };
 
 const TaskManager = () => {
   const [tasks, setTasks] = useState([]);
   const [filter, setFilter] = useState("all");
+  const [val, setVal] = useState(0);
 
-  const handleAddTask = (taskName) => {
+  const handleAddTask = useCallback((taskName) => {
     if (taskName.trim() === "") return;
     const newTask = { id: Date.now(), name: taskName, completed: false };
     setTasks((prevTasks) => [...prevTasks, newTask]);
-  };
+  }, []);
 
-  const handleDeleteTask = (taskId) => {
+  const handleDeleteTask = useCallback((taskId) => {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
-  };
+  }, []);
 
-  const toggleTaskCompletion = (taskId) => {
+  const toggleTaskCompletion = useCallback((taskId) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
         task.id === taskId ? { ...task, completed: !task.completed } : task
       )
     );
-  };
+  }, []);
 
-  const getFilteredTasks = () => {
+  const filteredTasks = useMemo(() => {
     if (filter === "completed") {
       return tasks.filter((task) => task.completed);
     } else if (filter === "active") {
       return tasks.filter((task) => !task.completed);
     }
     return tasks;
-  };
+  }, [tasks, filter]);
 
   return (
     <div>
@@ -82,10 +92,12 @@ const TaskManager = () => {
         <button onClick={() => setFilter("active")}>Aktywne</button>
       </div>
       <TasksList
-        tasks={getFilteredTasks()}
+        tasks={filteredTasks}
         handleDeleteTask={handleDeleteTask}
         toggleTaskCompletion={toggleTaskCompletion}
       />
+      <Comp />
+      <button onClick={() => setVal(val + 1)}>render</button>
     </div>
   );
 };

@@ -74,6 +74,14 @@ const UserForm = ({
   );
 };
 
+const Stats = ({ totalUsers, averageAge }) => (
+  <>
+    <h3>Statystyki Użytkowników</h3>
+    <p>Łączna liczba użytkowników: {totalUsers}</p>
+    <p>Średni wiek: {averageAge}</p>
+  </>
+);
+
 const UserDataManager = () => {
   const [users, setUsers] = useState([]);
   const [editingUserId, setEditingUserId] = useState(null);
@@ -131,9 +139,11 @@ const UserDataManager = () => {
         handleUpdateUser={handleUpdateUser}
         editingUserId={editingUserId}
       />
-      <h3>Statystyki Użytkowników</h3>
-      <p>Łączna liczba użytkowników: {userStats.totalUsers}</p>
-      <p>Średni wiek: {userStats.averageAge}</p>
+      <Stats
+        averageAge={userStats.averageAge}
+        totalUsers={userStats.totalUsers}
+      />
+
       <h3>Lista Użytkowników:</h3>
       <UserList users={users} handleEditUser={handleEditUser} />
     </div>

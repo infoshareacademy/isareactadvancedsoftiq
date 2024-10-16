@@ -1,5 +1,7 @@
+import { useState } from "react";
+
 export const BrokenLocalState = () => {
-  const [items, setItems] = useState([[1, 2, 3]]);
+  const [items, setItems] = useState([1, 2, 3]);
   const [val, setVal] = useState("");
 
   const addItem = () => {

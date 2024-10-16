@@ -1,6 +1,7 @@
-import { withFetchData } from "./withFetchData";
+import { useFetchData } from "./useFetchData";
+export const PostsHook = ({ url }) => {
+  const { data, loading, error } = useFetchData(url);
 
-export const PostsView = ({ data, loading, error }) => {
   if (loading) return <div>Ładowanie...</div>;
   if (error) return <div>Błąd: {error.message}</div>;
 
@@ -18,5 +19,3 @@ export const PostsView = ({ data, loading, error }) => {
     </div>
   );
 };
-
-export default withFetchData(PostsView);

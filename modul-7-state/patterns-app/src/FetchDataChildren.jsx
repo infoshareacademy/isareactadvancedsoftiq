@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export const FetchDataChildren = ({ url }) => {
+export const FetchDataChildren = ({ url, children }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -25,20 +25,5 @@ export const FetchDataChildren = ({ url }) => {
     fetchData();
   }, [url]);
 
-  if (loading) return <div>Ładowanie...</div>;
-  if (error) return <div>Błąd: {error.message}</div>;
-
-  return (
-    <div>
-      <h1>Posts</h1>
-      <ul>
-        {data.map((post) => (
-          <li key={post.id}>
-            <h2>{post.title}</h2>
-            <p>{post.body}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+  return children({ loading, error, data });
 };

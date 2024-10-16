@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, memo, useMemo, useCallback } from "react";
 
-const UserList = ({ users, handleEditUser }) => {
+const UserList = memo(({ users, handleEditUser }) => {
   return (
     <ul>
       {users.map((user) => (
@@ -11,79 +11,83 @@ const UserList = ({ users, handleEditUser }) => {
       ))}
     </ul>
   );
-};
+});
 
-const UserForm = ({
-  name,
-  setName,
-  email,
-  setEmail,
-  age,
-  setAge,
-  handleAddUser,
-  handleUpdateUser,
-  editingUserId,
-}) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
+const UserForm = memo(
+  ({
+    name,
+    setName,
+    email,
+    setEmail,
+    age,
+    setAge,
+    handleAddUser,
+    handleUpdateUser,
+    editingUserId,
+  }) => {
+    const handleSubmit = (e) => {
+      e.preventDefault();
 
-    if (editingUserId) {
-      handleUpdateUser({ name, email, age: parseInt(age, 10) });
-    } else {
-      const newUser = {
-        id: Date.now(),
-        name,
-        email,
-        age: parseInt(age, 10),
-      };
-      handleAddUser(newUser);
-    }
+      if (editingUserId) {
+        handleUpdateUser({ name, email, age: parseInt(age, 10) });
+      } else {
+        const newUser = {
+          id: Date.now(),
+          name,
+          email,
+          age: parseInt(age, 10),
+        };
+        handleAddUser(newUser);
+      }
 
-    setName("");
-    setEmail("");
-    setAge("");
-  };
+      setName("");
+      setEmail("");
+      setAge("");
+    };
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Imię"
-        required
-      />
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-        required
-      />
-      <input
-        type="number"
-        value={age}
-        onChange={(e) => setAge(e.target.value)}
-        placeholder="Wiek"
-        required
-      />
-      <button type="submit">
-        {editingUserId ? "Zaktualizuj Użytkownika" : "Dodaj Użytkownika"}
-      </button>
-    </form>
-  );
-};
+    return (
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Imię"
+          required
+        />
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          required
+        />
+        <input
+          type="number"
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
+          placeholder="Wiek"
+          required
+        />
+        <button type="submit">
+          {editingUserId ? "Zaktualizuj Użytkownika" : "Dodaj Użytkownika"}
+        </button>
+      </form>
+    );
+  }
+);
 
-const Stats = ({ totalUsers, averageAge }) => (
+const Stats = memo(({ totalUsers, averageAge }) => (
   <>
     <h3>Statystyki Użytkowników</h3>
     <p>Łączna liczba użytkowników: {totalUsers}</p>
     <p>Średni wiek: {averageAge}</p>
   </>
-);
+));
 
 const UserDataManager = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([
+    { id: "id_1", name: "Siema", age: 100, email: "lolo@lolo.pl" },
+  ]);
   const [editingUserId, setEditingUserId] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -93,13 +97,16 @@ const UserDataManager = () => {
     setUsers((prevUsers) => [...prevUsers, newUser]);
   };
 
-  const handleEditUser = (userId) => {
-    const userToEdit = users.find((user) => user.id === userId);
-    setName(userToEdit.name);
-    setEmail(userToEdit.email);
-    setAge(userToEdit.age);
-    setEditingUserId(userId);
-  };
+  const handleEditUser = useCallback(
+    (userId) => {
+      const userToEdit = users.find((user) => user.id === userId);
+      setName(userToEdit.name);
+      setEmail(userToEdit.email);
+      setAge(userToEdit.age);
+      setEditingUserId(userId);
+    },
+    [users]
+  );
 
   const handleUpdateUser = (updatedUser) => {
     setUsers((prevUsers) =>
@@ -113,7 +120,7 @@ const UserDataManager = () => {
     setAge("");
   };
 
-  const userStats = () => {
+  const userStats = useMemo(() => {
     const totalUsers = users.length;
     const averageAge =
       totalUsers > 0
@@ -123,7 +130,7 @@ const UserDataManager = () => {
       totalUsers,
       averageAge: averageAge.toFixed(2),
     };
-  };
+  }, [users]);
 
   return (
     <div>
@@ -143,7 +150,6 @@ const UserDataManager = () => {
         averageAge={userStats.averageAge}
         totalUsers={userStats.totalUsers}
       />
-
       <h3>Lista Użytkowników:</h3>
       <UserList users={users} handleEditUser={handleEditUser} />
     </div>

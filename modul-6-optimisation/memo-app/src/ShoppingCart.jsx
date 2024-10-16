@@ -69,7 +69,7 @@ const ShoppingCart = () => {
     );
   };
 
-  const totalPrice = () => {
+  const getTotalPrice = () => {
     return products
       .reduce((total, product) => total + product.price, 0)
       .toFixed(2);
@@ -81,7 +81,7 @@ const ShoppingCart = () => {
       <ProductInput onAddProduct={handleAddProduct} />
       <h3>Produkty w koszyku:</h3>
       <ProductList products={products} onDeleteProduct={handleDeleteProduct} />
-      <h3>Łączna wartość: ${totalPrice}</h3>
+      <h3>Łączna wartość: {getTotalPrice()}</h3>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 function createFetch() {
   let callCount = 0;
@@ -21,10 +21,15 @@ function createFetch() {
 const fetchData = createFetch();
 
 const Fetch = ({ initialData, value }) => {
+  const hasRendered = useRef(false);
   const [data, setData] = useState(initialData);
 
   useEffect(() => {
-    fetchData().then((d) => setData(d));
+    if (hasRendered.current) {
+      fetchData().then((d) => setData(d));
+    }
+
+    hasRendered.current = true;
   }, [value]);
 
   return <h1>{data}</h1>;

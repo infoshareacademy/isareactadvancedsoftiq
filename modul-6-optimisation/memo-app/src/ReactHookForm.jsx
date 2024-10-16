@@ -1,22 +1,34 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 
 const NameInput = () => {
-  const [name, setName] = useState("");
+  const name = useRef("");
+  const inputRef = useRef();
 
   const handleChange = (event) => {
-    setName(event.target.value);
+    name.current = event.target.value;
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    alert(`Witaj, ${name}!`);
+
+    // OPCJA 1
+    alert(`Witaj, ${name.current}!`);
+    // OPCJA 2
+    console.log(`Witaj, ${inputRef.current.value}!`);
+    // OPCJA 3
+    const data = new FormData(event.currentTarget);
+    console.log(`Witaj, ${data.get("name")}!`);
+
+    // reset
+    inputRef.current.value = "";
+    name.current = "";
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <label>
         Wpisz swoje imię:
-        <input type="text" value={name} onChange={handleChange} />
+        <input name="name" ref={inputRef} type="text" onChange={handleChange} />
       </label>
       <button type="submit">Wyślij</button>
     </form>

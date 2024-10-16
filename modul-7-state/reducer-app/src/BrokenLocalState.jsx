@@ -9,7 +9,7 @@ export const BrokenLocalState = () => {
     if (!items.includes(val)) {
       newItems.push(val);
     }
-    setItems(newItems);
+    setItems([...newItems]);
   };
 
   return (
